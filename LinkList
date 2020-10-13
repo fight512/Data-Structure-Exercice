@@ -1,25 +1,35 @@
-public class MySingleLinkedList {
+package Data_Structure;
+
+import java.util.Scanner;
+
+/**
+ * @Description
+ * @Author zdk
+ * @Date 2020/9/27 21:08
+ */
+
+public class MySingleLinkedList<T> {
     //节点类
     class Node {
-        int val;
+        T val;
         Node next;
         Node() { }
-        public Node(int val) {
+        public Node(T val) {
             this.val = val;
         }
     }
         Node head=null;
-        public MySingleLinkedList() {head=new Node(0);}
+        public MySingleLinkedList() {head=new Node(null);}
 
         //增加一个值为val的节点在链表的头部
-        public void addAtHead(int val) {
+        public void addAtHead(T val) {
             Node node = new Node(val);
             node.next = head.next;
             head.next=node;
         }
 
         //增加一个值为val的节点在链表的尾部
-        public void addAtTail(int val) {
+        public void addAtTail(T val) {
             Node node = new Node(val);
             Node p = new Node();p = head;int cnt=0;
             while(p.next!=null&&cnt!=this.getListLength())
@@ -30,17 +40,22 @@ public class MySingleLinkedList {
         }
 
         //获得第index个节点的值
-        public int get(int index) {
-            Node p = new Node();p = head;
-            int cnt=0;
-            while(p.next!=null&&cnt!=index)
+        public T get(int index) {
+            if(index<=0||index>this.getListLength())
+                return null;
+            else
             {
-                p=p.next;cnt++;
+                Node p = new Node();p = head;
+                int cnt=0;
+                while(p.next!=null&&cnt!=index)
+                {
+                    p=p.next;cnt++;
+                }
+                return p.val;
             }
-            return p.val;
         }
         //在第index个节点之前添加值为val的节点
-        public void addAtIndex(int index, int val)
+        public void addAtIndex(int index, T val)
         {
             Node p = new Node();p = head;
             int cnt=0;
@@ -65,8 +80,18 @@ public class MySingleLinkedList {
                 q.next=q.next.next;
             }
         }
+        //获取链表的最后一个元素
+        public T getTail()
+        {
+            Node p = new Node();p = head;int cnt=0;
+            while(p.next!=null&&cnt!=this.getListLength())
+            {
+                p=p.next;
+            }
+            return p.val;
+        }
         //删除指定值的节点
-        public void deleteAtValue(int val)
+        public void deleteAtValue(T val)
         {
             boolean flag=false;
             Node p = new Node();p = head;
@@ -108,10 +133,10 @@ public class MySingleLinkedList {
     }
 }
 
-class Test{
+class MySingleLinkedListTest {
     public static void main(String[] args)
     {
-        MySingleLinkedList test=new MySingleLinkedList();
+        MySingleLinkedList<Integer> test=new MySingleLinkedList<Integer>();
         test.addAtHead(10);
         test.addAtHead(9);
         test.addAtHead(8);
@@ -124,7 +149,11 @@ class Test{
 
         System.out.print("请输入要查询链表第几个节点的值:");
         int index1=new Scanner(System.in).nextInt();
-        System.out.printf("链表中第%d个节点的值为:%d\n",index1,test.get(index1));
+
+        if(test.get(index1)!=null)
+            System.out.printf("链表中第%d个节点的值为:%d\n",index1,test.get(index1));
+        else
+            System.out.println("输入无效");
 
         System.out.print("请输入要删除第几个节点的值:");
         int index2=new Scanner(System.in).nextInt();
