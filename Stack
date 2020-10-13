@@ -1,0 +1,48 @@
+package Data_Structure;
+
+import java.util.Scanner;
+
+/**
+ * @Description
+ * @Author zdk
+ * @Date 2020/10/13 19:27
+ */
+
+public class MyLinkedStack<T> {
+    MySingleLinkedList<T> list=new MySingleLinkedList<T>();
+    public void push(T val)//入栈
+    {
+        list.addAtTail(val);
+    }
+    public T pop()//获取并移除栈中的第一个元素
+    {
+        T temp=(T) list.getTail();list.deleteAtIndex(list.getListLength());
+        return temp;
+    }
+    public boolean isEmpty()//判断栈是否为空
+    {
+        if(list.getListLength()==0)
+            return true;
+        else
+            return false;
+    }
+}
+class MyLinkedStackTest{
+    public static void main(String[] args)
+    {
+        Scanner sc=new Scanner(System.in);
+        MyLinkedStack<String> stack=new MyLinkedStack<String>();
+        System.out.println("请输入数据(quit 结束):");
+        while(true)
+        {
+            String input=sc.next();
+            if(input.equals("quit"))
+                break;
+            else
+                stack.push(input);
+        }
+        System.out.println("先进后出的顺序为:");
+        while(!stack.isEmpty())
+            System.out.print(stack.pop()+" ");
+    }
+}
