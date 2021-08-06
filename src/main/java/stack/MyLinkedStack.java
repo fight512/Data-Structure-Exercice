@@ -27,9 +27,7 @@ public class MyLinkedStack<T> {
     {
         return list.getListLength() == 0;
     }
-}
 
-class MyLinkedStackTest {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         MyLinkedStack<String> stack = new MyLinkedStack<>();

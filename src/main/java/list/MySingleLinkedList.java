@@ -3,7 +3,7 @@ package list;
 import java.util.Scanner;
 
 /**
- * @Description
+ * @Description 泛型单链表实现
  * @Author zdk
  * @Date 2020/9/27 21:08
  */
@@ -15,42 +15,76 @@ public class MySingleLinkedList<T> {
     class Node {
         T val;
         Node next;
-
-        Node() {
-        }
-
         public Node(T val) {
             this.val = val;
         }
     }
 
+    /**
+     * 头结点
+     */
     Node head;
 
+    /**
+     * 尾节点
+     */
+    Node tail;
+
+    /**
+     * 初始化
+     */
     public MySingleLinkedList() {
         head = new Node(null);
+        tail=head;
     }
+
+    /**
+     * 创建链表同时添加第一个数据
+     */
+    public MySingleLinkedList(T val){
+        head=new Node(val);
+        //此时头结点与尾节点相同
+        tail=head;
+    }
+
 
     /**
      * 增加一个值为val的节点在链表的头部
      */
     public void addAtHead(T val) {
         Node node = new Node(val);
-        node.next = head.next;
-        head.next = node;
+        if (head == null) {
+            head=node;
+            tail=head;
+        }else{
+            node.next=head;
+            head=node;
+        }
     }
 
     /**
      * 增加一个值为val的节点在链表的尾部
      */
     public void addAtTail(T val) {
-        Node node = new Node(val);
-        Node p;
-        p = head;
-        int cnt = 0;
-        while (p.next != null && cnt != this.getListLength()) {
-            p = p.next;
+        /**
+         * 原方式
+         * Node node = new Node(val);
+         *         Node p;
+         *         p = head;
+         *         int cnt = 0;
+         *         while (p.next != null && cnt != this.getListLength()) {
+         *             p = p.next;
+         *         }
+         *         p.next = node;
+         */
+        if(head==null){
+            head=new Node(val);
+            tail=head;
+        }else{
+            Node newNode = new Node(val);
+            tail.next=newNode;
+            tail=newNode;
         }
-        p.next = node;
     }
 
     /**
@@ -91,6 +125,9 @@ public class MySingleLinkedList<T> {
      * 如果索引index 有效，则删除链表中的第index 个节点
      */
     public void deleteAtIndex(int index) {
+        if(head==null){
+            return;
+        }
         if (index > this.getListLength() || index <= 0) {
             System.out.println("输入无效");
         } else {
@@ -106,16 +143,27 @@ public class MySingleLinkedList<T> {
     }
 
     /**
+     * 获取链表的第一个
+     */
+    public T getHead() {
+        return head.next.val;
+    }
+
+    /**
      * 获取链表的最后一个元素
      */
     public T getTail() {
-        Node p;
-        p = head;
-        int cnt = 0;
-        while (p.next != null && cnt != this.getListLength()) {
-            p = p.next;
-        }
-        return p.val;
+        /**
+         * 原方法
+         *         Node p;
+         *         p = head;
+         *         int cnt = 0;
+         *         while (p.next != null && cnt != this.getListLength()) {
+         *             p = p.next;
+         *         }
+         *         return p.val;
+         */
+        return tail.val;
     }
 
     /**
@@ -168,38 +216,37 @@ public class MySingleLinkedList<T> {
         }
         System.out.println();
     }
-}
 
-class MySingleLinkedListTest {
     public static void main(String[] args) {
         MySingleLinkedList<Integer> test = new MySingleLinkedList<>();
-        test.addAtHead(10);
-        test.addAtHead(9);
-        test.addAtHead(8);
-        test.addAtHead(7);
-        test.addAtHead(6);
-        test.addAtHead(5);
         test.addAtTail(11);
+        test.addAtTail(12);
+        test.addAtTail(13);
+        test.addAtTail(14);
+        test.addAtTail(15);
+        test.addAtTail(16);
+        test.addAtTail(17);
+        test.addAtIndex(1, 20);
+        System.out.println("head："+test.getHead());
+        System.out.println("tail："+test.getTail());
         test.showList();
         System.out.printf("链表的长度为:%d\n", test.getListLength());
 
         System.out.print("请输入要查询链表第几个节点的值:");
-        int index1 = new Scanner(System.in).nextInt();
+        int index = new Scanner(System.in).nextInt();
 
-        if (test.get(index1) != null) {
-            System.out.printf("链表中第%d个节点的值为:%d\n", index1, test.get(index1));
+        if (test.get(index) != null) {
+            System.out.printf("链表中第%d个节点的值为:%d\n", index, test.get(index));
         } else {
             System.out.println("输入无效");
         }
 
         System.out.print("请输入要删除第几个节点的值:");
-        int index2 = new Scanner(System.in).nextInt();
-        test.deleteAtIndex(index2);
+        test.deleteAtIndex(new Scanner(System.in).nextInt());
         test.showList();
 
         System.out.print("请输入要删除的链表节点的值:");
-        int index3 = new Scanner(System.in).nextInt();
-        test.deleteAtValue(index3);
+        test.deleteAtValue(new Scanner(System.in).nextInt());
         test.showList();
     }
 }
